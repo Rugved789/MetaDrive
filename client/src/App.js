@@ -4,49 +4,76 @@ import { ethers } from "ethers";
 import FileUpload from "./components/FileUpload";
 import Display from "./components/Display";
 import Modal from "./components/Modal";
+import contractAddress from "./contractAddress";
 import "./App.css";
 
-// 🔹 Hardhat Localhost Network Config
-const HARDHAT_NETWORK = {
-  chainId: "0x539", // 1337 in hex
-  chainName: "Hardhat Localhost",
+// Target network config
+// By default this is set to Sepolia (for public deployment).
+// To use the local Hardhat network for development, replace TARGET_NETWORK
+// with HARDHAT_NETWORK below (or switch the object to the hardhat values).
+const SEPOLIA_NETWORK = {
+  chainId: "0xaa36a7", // 11155111 in hex
+  chainName: "Sepolia",
   nativeCurrency: {
     name: "ETH",
     symbol: "ETH",
     decimals: 18,
   },
-  rpcUrls: ["http://127.0.0.1:8545"],
+  rpcUrls: ["https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID"], // not required here but informative
 };
+
+// Hardhat local (example). Uncomment to use local instead of Sepolia.
+// const HARDHAT_NETWORK = {
+//   chainId: "0x539", // 1337 in hex
+//   chainName: "Hardhat Localhost",
+//   nativeCurrency: { name: "ETH", symbol: "ETH", decimals: 18 },
+//   rpcUrls: ["http://127.0.0.1:8545"],
+// };
+
+const TARGET_NETWORK = SEPOLIA_NETWORK;
 
 function App() {
   const [account, setAccount] = useState("");
   const [contract, setContract] = useState(null);
   const [provider, setProvider] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  
 
   useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // Only run in browser with MetaMask available
+    if (typeof window === "undefined" || !window.ethereum) {
+      console.error("MetaMask (window.ethereum) not found");
+      return;
+    }
+
+    const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
 
     const loadProvider = async () => {
-      if (provider) {
+      try {
+        // Try to switch the user's wallet to the target network
         try {
-          // 🔹 Ensure we’re on Hardhat network
           await window.ethereum.request({
             method: "wallet_switchEthereumChain",
-            params: [{ chainId: HARDHAT_NETWORK.chainId }],
+            params: [{ chainId: TARGET_NETWORK.chainId }],
           });
         } catch (switchError) {
-          // If network not added, add it
-          if (switchError.code === 4902) {
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [HARDHAT_NETWORK],
-            });
+          // If the chain is not added, add it
+          if (switchError && switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [TARGET_NETWORK],
+              });
+            } catch (addError) {
+              // user likely rejected adding the network
+              console.warn("User rejected adding the network:", addError);
+            }
+          } else {
+            // other switch errors are ignored here
+            console.warn("Error switching network:", switchError);
           }
         }
 
-        // 🔹 Event listeners
+        // Event listeners for reload on account/network change
         window.ethereum.on("chainChanged", () => {
           window.location.reload();
         });
@@ -54,27 +81,26 @@ function App() {
           window.location.reload();
         });
 
-        // 🔹 Request accounts
-        await provider.send("eth_requestAccounts", []);
-        const signer = provider.getSigner();
+        // Request accounts
+        await web3Provider.send("eth_requestAccounts", []);
+        const signer = web3Provider.getSigner();
         const address = await signer.getAddress();
         setAccount(address);
 
-        // 🔹 Contract setup
-        let contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-        const contract = new ethers.Contract(
-          contractAddress,
-          Upload.abi,
-          signer
-        );
+        // Use imported contractAddress (this should have been written by deploy script)
+        const usedAddress = contractAddress || "0x0000000000000000000000000000000000000000";
 
-        setContract(contract);
-        setProvider(provider);
-      } else {
-        console.error("Metamask is not installed");
+        const uploadContract = new ethers.Contract(usedAddress, Upload.abi, signer);
+
+        setContract(uploadContract);
+        setProvider(web3Provider);
+      } catch (err) {
+        console.error("Failed to load provider or contract:", err);
       }
     };
-    provider && loadProvider();
+
+    loadProvider();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -84,25 +110,20 @@ function App() {
           Share
         </button>
       )}
-      {modalOpen && (
-        <Modal setModalOpen={setModalOpen} contract={contract}></Modal>
-      )}
+      {modalOpen && <Modal setModalOpen={setModalOpen} contract={contract} />}
 
       <div className="App">
         <h1 style={{ color: "white" }}>MetaDrive</h1>
-        <div class="bg"></div>
-        <div class="bg bg2"></div>
-        <div class="bg bg3"></div>
+        <div className="bg"></div>
+        <div className="bg bg2"></div>
+        <div className="bg bg3"></div>
 
         <p style={{ color: "white" }}>
           Account : {account ? account : "Not connected"}
         </p>
-        <FileUpload
-          account={account}
-          provider={provider}
-          contract={contract}
-        ></FileUpload>
-        <Display contract={contract} account={account}></Display>
+
+        <FileUpload account={account} provider={provider} contract={contract} />
+        <Display contract={contract} account={account} />
       </div>
     </>
   );
