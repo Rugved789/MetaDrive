@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import FileUpload from "./components/FileUpload";
 import Display from "./components/Display";
 import Modal from "./components/Modal";
-// import contractAddress from "./contractAddress";
+import localContractAddress from "./contractAddress";
 import "./App.css";
 
 // Target network config
@@ -88,7 +88,7 @@ function App() {
         setAccount(address);
 
         // Use imported contractAddress (this should have been written by deploy script)
-        const usedAddress = process.env.REACT_APP_CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000";
+        const usedAddress = process.env.REACT_APP_CONTRACT_ADDRESS || localContractAddress;
 
         const uploadContract = new ethers.Contract(usedAddress, Upload.abi, signer);
 
