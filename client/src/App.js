@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import FileUpload from "./components/FileUpload";
 import Display from "./components/Display";
 import Modal from "./components/Modal";
-import contractAddress from "./contractAddress";
+// import contractAddress from "./contractAddress";
 import "./App.css";
 
 // Target network config
@@ -19,7 +19,7 @@ const SEPOLIA_NETWORK = {
     symbol: "ETH",
     decimals: 18,
   },
-  rpcUrls: ["https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID"], // not required here but informative
+  rpcUrls: [process.env.REACT_APP_SEPOLIA_RPC_URL], // not required here but informative
 };
 
 // Hardhat local (example). Uncomment to use local instead of Sepolia.
@@ -88,7 +88,7 @@ function App() {
         setAccount(address);
 
         // Use imported contractAddress (this should have been written by deploy script)
-        const usedAddress = contractAddress || "0x0000000000000000000000000000000000000000";
+        const usedAddress = process.env.REACT_APP_CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000";
 
         const uploadContract = new ethers.Contract(usedAddress, Upload.abi, signer);
 
