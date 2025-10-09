@@ -1,0 +1,62 @@
+.problem {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.problemContainer {
+  margin: 0px 150px 0px 150px;
+}
+.title {
+  text-align: center;
+  margin-bottom: 62px;
+}
+.title h2 {
+  margin: 0px;
+  font-size: 35px;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.title p {
+  font-size: 20px;
+  text-align: center;
+  color: rgb(70, 68, 68);
+  align-items: center;
+  margin: 0px 260px 0px 260px;
+}
+.issues {
+  display: flex;
+  gap: 40px;
+}
+
+.issueBox {
+  padding: 24px;
+  border-radius: 20px;
+  background-color: #fef3f2;
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column; /* stack icon, heading, paragraph */
+  align-items: center; /* center horizontally */
+  justify-content: center; /* center vertically if you give height */
+  text-align: center; /* center text inside h3 and p */
+}
+
+.issueBox h3 {
+  display: flex;
+  text-align: center;
+  font-size: 25px;
+}
+
+.issueBox p {
+  color: rgb(108, 105, 105);
+}
+.issueBox .svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.issueBox .svg svg {
+  border-radius: 50%;
+  background-color: rgb(254, 231, 232);
+}

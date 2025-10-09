@@ -1,0 +1,48 @@
+.workflow {
+  padding: 80px 0px 80px 0px;
+  background: rgb(238, 238, 238);
+}
+.workContainer {
+  margin: 0px 150px 0px 150px;
+}
+.workHeading {
+  text-align: center;
+  justify-content: center;
+  margin-bottom: 65px;
+}
+.workHeading h2 {
+  margin-top: 0px;
+  margin-bottom: 16px;
+  font-size: 35px;
+}
+.workHeading p {
+  color: rgb(103, 101, 101);
+  font-size: 20px;
+}
+.process {
+  display: flex;
+  gap: 20px;
+}
+.process .steps {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.steps .step_logo {
+  width: fit-content;
+  background: linear-gradient(to right, #2563eb, #9333ea);
+  border-radius: 50%;
+  padding: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 25px;
+}
+.steps p {
+  margin: 0px;
+  color: rgb(106, 103, 103);
+}
+.steps h3 {
+  padding-top: 20px;
+  border-top: 2px solid #2563eb;
+}

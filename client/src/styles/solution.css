@@ -1,0 +1,89 @@
+.Solution {
+  background: linear-gradient(to right, #2563eb, #9333ea);
+  padding: 80px 0px 80px 0px;
+}
+
+.solutionContainer {
+  display: flex;
+  padding: 0px 150px 0px 150px;
+  align-items: center;
+}
+
+.solInfo {
+  display: flex;
+  align-items: center;
+  gap: 90px;
+}
+
+.InfoText h2 {
+  margin: 0px;
+  margin-bottom: 24px;
+  color: white;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.InfoText p {
+  margin-bottom: 32px;
+  color: rgb(209, 201, 201);
+  font-size: 22px;
+}
+
+.InfoText {
+  width: 585px;
+  height: 585px;
+  align-items: center;
+}
+
+.InfoImageBox {
+  width: 585px;
+}
+
+/* ✅ Fix: Center the image inside the white box */
+.infoImageContainer {
+  background-color: rgba(255, 255, 255, 0.833);
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 32px;
+
+  display: flex;              /* added */
+  justify-content: center;    /* horizontally center */
+  align-items: center;        /* vertically center */
+  height: 100%;               /* ensure it takes full height of parent */
+}
+
+.infoImageContainer .InfoImg img {
+  height: 520px;
+  width: 520px;
+  border-radius: 20px;
+  object-fit: cover; /* ✅ keeps proportions */
+}
+
+.point1,
+.point2,
+.point3 {
+  display: flex;
+  margin-bottom: 45px;
+  align-items: flex-start;
+}
+
+.pointSvg {
+  display: flex;
+  justify-content: center;
+  padding: 2px 10px 10px 0px;
+}
+
+.pointSvg svg {
+  color: white;
+}
+
+.pointtext h3 {
+  margin: 0px;
+  color: white;
+}
+
+.pointtext p {
+  margin-bottom: 0px;
+  font-size: 18px;
+  color: white;
+}

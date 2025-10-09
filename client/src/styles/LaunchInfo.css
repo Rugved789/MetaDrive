@@ -1,0 +1,34 @@
+.LaunchContainer {
+  background: linear-gradient(to right, #2563eb, #9333ea);
+  padding: 80px 0px 80px 0px;
+}
+.Launch {
+  margin: 0px 300px 0px 300px;
+  align-items: center;
+  text-align: center;
+  color: white;
+}
+.Launch h2 {
+  margin-top: 0px;
+  font-size: 35px;
+}
+.Launch p {
+  font-size: 18px;
+  margin: 0px 100px 30px 100px;
+}
+.Launch .button {
+  outline: none;
+  border: none;
+  padding: 10px 15px 10px 15px;
+  border-radius: 10px;
+  font-size: 17px;
+  background-color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+}
+.Launch button span {
+  display: contents;
+}

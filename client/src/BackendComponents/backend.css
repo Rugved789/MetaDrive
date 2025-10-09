@@ -78,9 +78,6 @@ body {
   transform: translate(-50%, -50%);
 }
 
-h1 {
-  font-family: monospace;
-}
 
 @keyframes slide {
   0% {
@@ -119,14 +116,12 @@ header .overlay {
 }
 
 h1 {
-  font-family: "Dancing Script", cursive;
   font-size: 60px;
   margin-bottom: 30px;
 }
 
 h3,
 p {
-  font-family: "Open Sans", sans-serif;
   margin-bottom: 30px;
 }
 .share {

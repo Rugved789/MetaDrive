@@ -1,0 +1,77 @@
+footer {
+  padding: 30px 0px 30px 0px;
+  background-color: #111827;
+}
+.footContainer {
+  margin: 0px 120px 0px 120px;
+}
+.weblogo img {
+  height: 35px;
+  width: 50px;
+}
+.Links {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.Social .webHed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.Social .webHed span {
+  font-size: 25px;
+  color: white;
+}
+.Social p {
+  color: grey;
+  font-size: 17px;
+  margin-top: 10px;
+}
+.SocialLinks {
+  display: flex;
+  gap: 15px;
+}
+.SocialLinks a {
+  color: grey;
+  text-decoration: none;
+}
+.product,
+.resources {
+  color: grey;
+}
+.product ul li,
+.resources ul li {
+  list-style: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.product ul,
+.resources ul {
+  padding: 0px;
+}
+.product ul a,
+.resources ul a {
+  text-decoration: none;
+  color: grey;
+}
+.product,
+.resources {
+  color: grey;
+}
+.product h3,
+.resources h3 {
+  color: white;
+  margin-top: 0px;
+}
+.copyWrite {
+  text-align: center;
+  border-top: 0.8px solid grey;
+  padding-top: 15px;
+  margin-top: 32px;
+}
+.copyWrite p {
+  color: grey;
+}
