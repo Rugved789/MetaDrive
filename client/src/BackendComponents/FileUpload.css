@@ -18,7 +18,6 @@ input[type="file"] {
   display: none;
 }
 .choose {
-  background-image: linear-gradient(135deg, #5aff15, #00b712);
   color: #fff;
   border: none;
   padding: 10px 20px;
