@@ -64,7 +64,22 @@ function Backend() {
   const connectWallet = async () => {
     if (!provider) return alert("MetaMask not detected!");
     try {
+      // Request account access first - this ensures signer has an account
+      try {
+        // prefer provider.send when available
+        if (provider.send) {
+          await provider.send("eth_requestAccounts", []);
+        } else if (window.ethereum && window.ethereum.request) {
+          await window.ethereum.request({ method: "eth_requestAccounts" });
+        }
+      } catch (reqErr) {
+        console.warn("eth_requestAccounts failed:", reqErr);
+        // continue - getSigner/getAddress may still work in some wallets
+      }
+
       const signer = provider.getSigner();
+
+      // Now get the address (will throw if signer has no accounts)
       const address = await signer.getAddress();
 
       // Request signature
@@ -81,7 +96,14 @@ function Backend() {
       setContract(uploadContract);
     } catch (err) {
       console.error("Wallet connection failed:", err);
-      alert("Connection rejected or failed!");
+      // Better user feedback for common issue
+      if (err && err.code === "UNSUPPORTED_OPERATION") {
+        alert("Wallet connection failed: no unlocked account available. Please unlock your wallet and try again.");
+      } else if (err && err.code === 4001) {
+        alert("Connection request rejected by user.");
+      } else {
+        alert("Connection rejected or failed! See console for details.");
+      }
     }
   };
 
