@@ -16,7 +16,7 @@ body {
   /* ✅ Center the navbar perfectly */
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
+  width: 90%;
 
   z-index: 1000; /* keeps navbar above everything */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -65,13 +65,13 @@ body {
   background: linear-gradient(to right, #3b82f6, #a855f7);
   border: none;
   color: white !important;
-  border-radius: 8px;
+  border-radius: 22px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
-  padding: 7px;
+  padding: 10px;
 }
 
 .launch-btn:hover {

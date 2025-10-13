@@ -2,72 +2,84 @@ import { useState } from "react";
 import "./Display.css";
 
 const Display = ({ contract, account }) => {
-  const [data, setData] = useState("");
+  const [data, setData] = useState([]);
 
   const getdata = async () => {
     let dataArray;
-    const Otheraddress = document.querySelector(".address").value;
+    const otherAddress = document.querySelector(".address-input").value;
 
     try {
-      if (Otheraddress) {
-        dataArray = await contract.display(Otheraddress);
-      } else {
-        dataArray = await contract.display(account);
-      }
-    } catch (e) {
-      alert("You don't have access");
+      dataArray = otherAddress
+        ? await contract.display(otherAddress)
+        : await contract.display(account);
+    } catch (err) {
+      alert("❌ You don't have access to view these images.");
       return;
     }
 
-    const isEmpty = Object.keys(dataArray).length === 0;
-
-    if (!isEmpty) {
-      const str = dataArray.toString();
-      const str_array = str.split(",");
-
-      const images = str_array.map((item, i) => {
-        let imageUrl = "";
-
-        if (item.startsWith("ipfs://")) {
-          // stored as ipfs://CID
-          imageUrl = `https://gateway.pinata.cloud/ipfs/${item.substring(7)}`;
-        } else if (item.startsWith("http")) {
-          // already full URL
-          imageUrl = item;
-        } else {
-          // only CID stored
-          imageUrl = `https://gateway.pinata.cloud/ipfs/${item}`;
-        }
-
-        return (
-          <a href={imageUrl} key={i} target="_blank" rel="noreferrer">
-            <img
-              key={i}
-              src={imageUrl}
-              alt="new"
-              className="image-list"
-            />
-          </a>
-        );
-      });
-
-      setData(images);
-    } else {
-      alert("No image to display");
+    if (!dataArray || dataArray.length === 0) {
+      alert("⚠️ No image to display");
+      return;
     }
+
+    const gateways = [
+      "https://ipfs.io/ipfs/",
+      "https://cloudflare-ipfs.com/ipfs/",
+      "https://gateway.pinata.cloud/ipfs/",
+    ];
+
+    const images = dataArray.map((item, index) => {
+      let cid = item.startsWith("ipfs://") ? item.slice(7) : item;
+      const srcCandidates = gateways.map((g) => `${g}${cid}`);
+
+      const handleError = (e) => {
+        const img = e.target;
+        const current = srcCandidates.indexOf(img.src);
+        const next = current + 1;
+        if (next < srcCandidates.length) {
+          img.src = srcCandidates[next];
+        } else {
+          img.alt = "Image unavailable";
+        }
+      };
+
+      return (
+        <a
+          href={`https://ipfs.io/ipfs/${cid}`}
+          key={index}
+          target="_blank"
+          rel="noreferrer"
+          className="image-wrapper"
+        >
+          <img
+            src={srcCandidates[0]}
+            alt="Uploaded"
+            className="image-item"
+            onError={handleError}
+          />
+        </a>
+      );
+    });
+
+    setData(images);
   };
 
   return (
     <>
-      <div className="image-list">{data}</div>
-      <input
-        type="text"
-        placeholder="Enter Address"
-        className="address"
-      />
-      <button className="center button" onClick={getdata}>
-        Get Data
-      </button>
+      {/* Address + Button Container */}
+      <div className="address-container">
+        <input
+          type="text"
+          placeholder="Enter Address"
+          className="address-input"
+        />
+        <button className="get-data-btn" onClick={getdata}>
+          Get Data
+        </button>
+      </div>
+
+      {/* Image Grid */}
+      {data.length > 0 && <div className="image-list">{data}</div>}
     </>
   );
 };
